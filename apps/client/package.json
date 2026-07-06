@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "clean": "del-cli dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -24,7 +27,12 @@
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.14",
+    "@repo/types": "workspace:*",
+    "@repo/constants": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@repo/validators": "workspace:*",
+    "@repo/api-types": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

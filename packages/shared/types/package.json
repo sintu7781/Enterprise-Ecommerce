@@ -1,0 +1,14 @@
+{
+  "name": "@repo/types",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "del-cli dist"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
