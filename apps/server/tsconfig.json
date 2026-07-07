@@ -1,4 +1,5 @@
 {
   "extends": "../../packages/configs/tsconfig/node.json",
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
 }
