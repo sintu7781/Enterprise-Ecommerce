@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 import { z } from "zod";
 
-dotenv.config();
+dotenv.config({
+  path: ".env",
+});
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
@@ -10,7 +12,9 @@ const envSchema = z.object({
 
   HOST: z.string().min(1),
 
-  DATABASE_URL: z.url(),
+  APP_NAME: z.string(),
+
+  DATABASE_URL: z.string().min(1),
 
   JWT_ACCESS_SECRET: z.string().min(32),
 
