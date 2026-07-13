@@ -7,43 +7,72 @@ datasource db {
 }
 
 model User {
-  id                     String                  @id @default(uuid()) @db.Uuid
-  publicId               String                  @unique @default(cuid())
-  email                  String                  @unique
-  username               String                  @unique
-  password               String
-  firstName              String
-  lastName               String?
-  avatarUrl              String?
-  phone                  String?
-  isEmailVerified        Boolean                 @default(false)
-  deletedAt              DateTime?
-  lastLoginAt            DateTime?
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  addresses              Address[]
-  auditLogs              AuditLog[]
-  cart                   Cart?
-  emailQueue             EmailQueue[]
-  loginHistory           LoginHistory[]
-  notifications          Notification[]
-  notificationPreference NotificationPreference?
-  order                  Order[]
-  productViews           ProductView[]
-  pushNotifications      PushNotification[]
-  recentlyViewed         RecentlyViewed[]
-  refreshTokens          RefreshToken[]
-  passwordResetTokens    PasswordResetToken[]
-  reviews                Review[]
-  reviewVotes            ReviewVote[]
-  smsQueue               SMSQueue[]
-  searchHistory          SearchHistory[]
-  roles                  UserRole[]
-  wishlist               Wishlist?
-  tokenVersion           Int                     @default(0)
+  id                      String                   @id @default(uuid()) @db.Uuid
+  publicId                String                   @unique @default(cuid())
+  email                   String                   @unique
+  username                String                   @unique
+  password                String
+  firstName               String
+  lastName                String?
+  avatarUrl               String?
+  phone                   String?
+  emailVerifiedAt         DateTime?
+  status                  UserStatus               @default(PENDING_VERIFICATION)
+  deletedAt               DateTime?
+  deletedBy               String?
+  lastLoginAt             DateTime?
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  addresses               Address[]
+  auditLogs               AuditLog[]
+  cart                    Cart?
+  emailQueue              EmailQueue[]
+  loginHistory            LoginHistory[]
+  notifications           Notification[]
+  notificationPreference  NotificationPreference?
+  order                   Order[]
+  productViews            ProductView[]
+  pushNotifications       PushNotification[]
+  recentlyViewed          RecentlyViewed[]
+  refreshTokens           RefreshToken[]
+  passwordResetTokens     PasswordResetToken[]
+  lastPasswordChangedAt   DateTime?
+  emailVerificationTokens EmailVerificationToken[]
+  reviews                 Review[]
+  reviewVotes             ReviewVote[]
+  smsQueue                SMSQueue[]
+  searchHistory           SearchHistory[]
+  roles                   UserRole[]
+  wishlist                Wishlist?
+  tokenVersion            Int                      @default(0)
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  BANNED
+  DELETED
 }
 
 model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tokenId   String    @unique
+  tokenHash String    @unique
+  userId    String    @db.Uuid
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  usedAt    DateTime?
+  ipAddress String?
+  userAgent String?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model EmailVerificationToken {
   id        String    @id @default(uuid()) @db.Uuid
   tokenId   String    @unique
   tokenHash String    @unique
