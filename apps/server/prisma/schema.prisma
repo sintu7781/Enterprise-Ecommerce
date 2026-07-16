@@ -101,7 +101,7 @@ model Role {
   deletedAt   DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  permission  RolePermission[]
+  permissions RolePermission[]
   users       UserRole[]
 
   @@index([name])
