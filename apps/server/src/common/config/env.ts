@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
+
 import type { StringValue } from "ms";
+
 import { z } from "zod";
 
 dotenv.config({
@@ -33,8 +35,12 @@ const envSchema = z.object({
     .int()
     .min(1)
     .max(65535),
+  
+  FRONTEND_URL: z.url(),
+  
+  CORS_ORIGIN: z.string(),
 
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.url(),
 
   LOG_LEVEL: z.enum([
     "fatal",
@@ -118,6 +124,16 @@ const envSchema = z.object({
     .int()
     .min(16)
     .max(64),
+  
+  SMTP_HOST: z.string(),
+
+  SMTP_PORT: z.coerce.number(),
+
+  SMTP_USER: z.string(),
+
+  SMTP_PASSWORD: z.string(),
+
+  SMTP_FROM: z.string(),
 });
 
 const parsed = envSchema.safeParse(process.env);
