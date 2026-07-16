@@ -45,6 +45,7 @@ model User {
   roles                   UserRole[]
   wishlist                Wishlist?
   tokenVersion            Int                      @default(0)
+  roleAssignments         UserRole[]               @relation("RoleAssignments")
 }
 
 enum UserStatus {
@@ -92,47 +93,60 @@ model EmailVerificationToken {
 model Role {
   id          String           @id @default(uuid()) @db.Uuid
   publicId    String           @unique @default(cuid())
-  name        RoleName         @unique
+  name        String           @unique
+  displayName String
   description String?
+  isSystem    Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  deletedAt   DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   permission  RolePermission[]
   users       UserRole[]
-}
 
-enum RoleName {
-  ADMIN
-  SELLER
-  CUSTOMER
+  @@index([name])
+  @@index([isActive])
 }
 
 model Permission {
   id          String           @id @default(uuid()) @db.Uuid
   publicId    String           @unique @default(cuid())
-  name        String           @unique
+  code        String           @unique
+  displayName String
   description String?
+  isSystem    Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  deletedAt   DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   roles       RolePermission[]
+
+  @@index([code])
+  @@index([isActive])
 }
 
 model UserRole {
-  userId     String   @db.Uuid
-  roleId     String   @db.Uuid
-  assignedAt DateTime @default(now())
-  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @db.Uuid
+  roleId           String   @db.Uuid
+  assignedAt       DateTime @default(now())
+  assignedByUserId String?  @db.Uuid
+  assignedByUser   User?    @relation("RoleAssignments", fields: [assignedByUserId], references: [id])
+  role             Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, roleId])
+  @@index([roleId])
 }
 
 model RolePermission {
   roleId       String     @db.Uuid
   permissionId String     @db.Uuid
+  assignedAt   DateTime   @default(now())
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@id([roleId, permissionId])
+  @@index([permissionId])
 }
 
 model RefreshToken {
