@@ -7,6 +7,11 @@ import {
 } from "./modules/auth/index.js";
 import { SmtpAdapter } from "./modules/email/adapters/smtp.adapter.js";
 import { createEmailService } from "./modules/email/services/email.service.js";
+import {
+    RbacRepository,
+    createRbacService,
+    createRbacController,
+ } from "./modules/rbac/index.js";
 
 const emailService = createEmailService(
     new SmtpAdapter()
@@ -14,6 +19,8 @@ const emailService = createEmailService(
 
 export const repositories = {
     auth: new AuthRepository(prisma),
+
+    rbac: new RbacRepository(prisma),
 };
 
 export const services = {
@@ -24,10 +31,18 @@ export const services = {
         repository: repositories.auth,
         emailService: emailService,
     }),
+
+    rbac: createRbacService({
+        repository: repositories.rbac,
+    }),
 };
 
 export const controllers = {
     auth: createAuthController(
         services.auth,
+    ),
+
+    rbac: createRbacController(
+        services.rbac,
     ),
 };
