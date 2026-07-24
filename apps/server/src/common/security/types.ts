@@ -32,10 +32,4 @@ export interface DecodedToken<T extends JwtPayload = JwtPayload,> {
   expiresAt: Date;
 }
 
-export interface AuthenticatedUser {
-    userId: string;
-
-    sessionId: string;
-
-    tokenVersion: number;
-}
+export type AuthenticatedUser = AccessTokenPayload;
