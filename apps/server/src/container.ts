@@ -5,8 +5,11 @@ import {
     createAuthController,
     createAuthService
 } from "./modules/auth/index.js";
+
 import { SmtpAdapter } from "./modules/email/adapters/smtp.adapter.js";
+
 import { createEmailService } from "./modules/email/services/email.service.js";
+
 import {
     RbacRepository,
     createRbacService,
