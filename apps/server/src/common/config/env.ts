@@ -4,6 +4,12 @@ import type { StringValue } from "ms";
 
 import { z } from "zod";
 
+import { emailSchema } from "../validators/email.validator.js";
+
+import { usernameSchema } from "../validators/username.validator.js";
+
+import { passwordSchema } from "../validators/password.validator.js";
+
 dotenv.config({
   path: ".env",
 });
@@ -134,6 +140,23 @@ const envSchema = z.object({
   SMTP_PASSWORD: z.string(),
 
   SMTP_FROM: z.string(),
+
+  SEED_ADMIN_EMAIL: emailSchema,
+
+  SEED_ADMIN_USERNAME: usernameSchema,
+
+  SEED_ADMIN_PASSWORD: passwordSchema,
+
+  SEED_ADMIN_FIRST_NAME: z
+    .string()
+    .trim()
+    .min(2)
+    .max(50),
+  SEED_ADMIN_LAST_NAME: z
+    .string()
+    .trim()
+    .max(50)
+    .optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
