@@ -10,7 +10,15 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "turbo run format",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "db:generate": "pnpm --filter @enterprise/server db:generate",
+    "db:migrate": "pnpm --filter @enterprise/server db:migrate",
+    "db:deploy": "pnpm --filter @enterprise/server db:deploy",
+    "db:reset": "pnpm --filter @enterprise/server db:reset",
+    "db:seed": "pnpm --filter @enterprise/server db:seed",
+    "db:studio": "pnpm --filter @enterprise/server db:studio",
+    "db:format": "pnpm --filter @enterprise/server db:format",
+    "db:validate": "pnpm --filter @enterprise/server db:validate"
   },
   "keywords": [],
   "author": "",

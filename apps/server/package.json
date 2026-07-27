@@ -12,6 +12,12 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:format": "prisma format",
+    "db:validate": "prisma validate",
     "typecheck": "tsc --noEmit",
     "clean": "del-cli dist"
   },
